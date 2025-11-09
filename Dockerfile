@@ -1,5 +1,8 @@
-# Use LABEL instead of MAINTAINER (deprecated)
 FROM eclipse-temurin:17-jdk-alpine
-LABEL maintainer="devtiro.com"
-COPY target/*.jar app.jar
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+WORKDIR /app
+COPY mvnw .
+COPY .mvn .mvn
+COPY pom.xml .
+COPY src src
+RUN ./mvnw clean package -DskipTests
+CMD ["java", "-jar", "target/*.jar"]
